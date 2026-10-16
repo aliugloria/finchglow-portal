@@ -1,0 +1,28 @@
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 560px;
+
+  input {
+    width: 100%;
+    min-height: var(--tap);
+    padding: 0 var(--space-4) 0 44px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    color: var(--text);
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+  }
+}
+
+.icon {
+  position: absolute;
+  left: var(--space-4);
+  color: var(--text-muted);
+  pointer-events: none;
+}

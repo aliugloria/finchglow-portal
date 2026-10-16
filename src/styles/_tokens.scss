@@ -1,0 +1,69 @@
+:root {
+  --font-sans: 'Plus Jakarta Sans Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Brand (Finchglow) */
+  --brand-blue: #0b5c9e;
+  --brand-cyan: #12a8e0;
+  --brand-navy: #0b2a45;
+
+  /* Company theme: overwritten at runtime from src/config/companies.ts */
+  --accent: #0b5c9e;
+  --accent-dark: #0b2a45;
+  --accent-soft: #e6f0fa;
+  --on-accent: #ffffff;
+
+  /* Surfaces and text (muted text is 7:1 on white) */
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface-muted: #eef2f7;
+  --border: #d9e1ec;
+  --text: #0b2a45;
+  --text-muted: #475569;
+  --focus: #1d4ed8;
+
+  /* Severity: text colours are AA on their own background */
+  --critical: #c8102e;
+  --critical-bg: #fde8ec;
+  --critical-text: #a50d26;
+  --warning: #d97706;
+  --warning-bg: #fef3c7;
+  --warning-text: #7c3a06;
+  --info: #0369a1;
+  --info-bg: #e0f2fe;
+  --info-text: #075985;
+
+  /* Launcher tile tones (icons only, never text) */
+  --tone-blue-bg: #e0eefe;
+  --tone-blue: #1d4ed8;
+  --tone-green-bg: #dcf5e6;
+  --tone-green: #15803d;
+  --tone-purple-bg: #ece6fb;
+  --tone-purple: #6d28d9;
+  --tone-orange-bg: #feeadb;
+  --tone-orange: #c2410c;
+  --tone-red-bg: #fde4ea;
+  --tone-red: #be123c;
+
+  /* Spacing, radius, elevation */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-20: 80px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px rgb(11 42 69 / 6%), 0 2px 8px rgb(11 42 69 / 4%);
+  --shadow-md: 0 8px 28px rgb(11 42 69 / 16%);
+
+  /* Layout */
+  --tap: 44px;
+  --sidebar-w: 248px;
+  --banner-h: 56px;
+  --bottom-nav-h: 64px;
+}
