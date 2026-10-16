@@ -1,0 +1,73 @@
+@use 'mixins' as *;
+
+.banner {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  min-height: var(--banner-h);
+  padding: var(--space-3) var(--space-4);
+  background: var(--critical);
+  color: #fff;
+  font-weight: 600;
+
+  @include up(lg) {
+    padding-inline: var(--space-8);
+  }
+
+  :focus-visible {
+    outline-color: #fff;
+  }
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  flex: 1 1 260px;
+  line-height: 1.35;
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.label {
+  font-weight: 800;
+}
+
+.more {
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0 var(--space-4);
+  border: 2px solid #fff;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.9375rem;
+}
+
+.primary {
+  background: #fff;
+  color: var(--critical-text);
+}
+
+.secondary {
+  background: transparent;
+  color: #fff;
+}
