@@ -1,5 +1,7 @@
 # Finchglow Group Staff Portal
 
+**Live demo:** [finchglow-portal-prototype.vercel.app](https://finchglow-portal-prototype.vercel.app/)
+
 A home-page prototype for staff across Finchglow Holdings' six businesses. It brings their tools, news and alerts into one place, with a shared layout that changes colour and content when a different business is selected.
 
 The scope is the portal home experience. It uses mock staff and content, so there is no account setup or backend to run.
@@ -13,14 +15,12 @@ npm ci
 npm run dev
 ```
 
-Open http://localhost:3000. For a production build:
+Open http://localhost:3000. For a production build with Webpack:
 
 ```bash
-npm run build
+npm run build -- --webpack
 npm start
 ```
-
-The build was also verified with `npm run build -- --webpack`. The default Turbopack build did not finish during the review, so the recorded bundle figures below use Webpack.
 
 ```bash
 npm test              # Run the tests once
@@ -55,7 +55,7 @@ Next.js App Router and TypeScript provide the page and shared types. SCSS Module
 
 The provider holds the small amount of state shared across the page. Feed requests use a small loading hook that ignores stale responses and offers retry. Visibility rules live in plain functions so they can be tested without rendering the interface.
 
-To add a seventh subsidiary, add its company configuration and extend `CompanyId`, then assign its apps and mock content. No duplicated page or component is needed. The current logo retains the group name and plane mark; only its colours change. Distinct company logos are a remaining branding detail.
+To add a seventh subsidiary, add its company configuration and extend `CompanyId`, then assign its apps and mock content. No duplicated page or component is needed. The logo keeps the Finchglow name and changes its mark, business label and colours from the selected company configuration. The marks are prototype icons, rather than official subsidiary logo assets.
 
 The three main trade-offs are in [DECISIONS.md](DECISIONS.md).
 
@@ -63,17 +63,17 @@ The three main trade-offs are in [DECISIONS.md](DECISIONS.md).
 
 The layout uses a desktop sidebar from 1024 px and bottom navigation below that. It includes a skip link, labelled controls, visible focus styles, text labels for severity, live status messages and reduced-motion support. Critical alerts use a sticky banner and `role="alert"`; they remain visible until acknowledged.
 
-Manual accessibility checks found no issues. The automated suite checks company colour contrast, severity labels, filtering, search, loading and retry behaviour, critical-alert acknowledgement and shared alert details from the banner, feed and search. The axe check covers the loaded launcher and feeds with the banner; it does not measure the whole browser experience or replace the manual checks.
+Manual checks covered keyboard navigation, modal dismissal and focus return, responsive layouts and visible severity labels. The automated suite checks company colour contrast, severity labels, filtering, search, loading and retry behaviour, critical-alert acknowledgement and shared alert details from the banner, feed and search. Axe checks cover the complete loaded page in both navigation layouts, plus the open alert modal. These automated checks do not measure the whole browser experience or replace the manual checks.
 
-Validation on 19 October 2026: all 63 tests passed, TypeScript passed during the production build, and `npm run build -- --webpack` completed successfully.
+Validation on 19 October 2026: all 76 tests passed, TypeScript passed during the production build, and `npm run build -- --webpack` completed successfully.
 
 ## Performance
 
-Measured on 19 October 2026 from the completed Webpack production build:
+Measured on 19 October 2026 from the completed Webpack production build with `NEXT_PUBLIC_MOCK_FAIL_RATE=0`:
 
 | Home-page asset | Minified / uncompressed | Gzip estimate |
 | --- | --- | --- |
-| Initial JavaScript (8 script files) | 640.0 KiB | 198.6 KiB |
+| Initial JavaScript (8 script files) | 640.1 KiB | 198.7 KiB |
 | Stylesheets (3 files) | 29.2 KiB | 7.0 KiB |
 | Default hero WebP | 67.1 KiB | Already image-compressed |
 
@@ -95,8 +95,6 @@ The role-based view is the chosen extra. Dark mode and offline caching were left
 
 ## With another week
 
-First, finish company-specific logo configuration and replace placeholder app URLs with agreed destinations. Then connect real identity and content endpoints, persist acknowledgements and validate permissions on the server. For staff on patchy Wi-Fi, add cached alerts with a clear offline/stale indicator and define how urgent updates are delivered when connectivity returns.
+First, replace the prototype brand marks with approved subsidiary logos and replace placeholder app URLs with agreed destinations. Then connect real identity and content endpoints, persist acknowledgements and validate permissions on the server. For staff on patchy Wi-Fi, add cached alerts with a clear offline/stale indicator and define how urgent updates are delivered when connectivity returns.
 
 Alongside that, test the complete flows with a screen reader and representative staff, tighten the font and image payload, and measure loading on a slow mobile connection. Useful success measures would be time to open a needed tool, search success, critical-alert acknowledgement time, and loading/error rates by device and connection.
-
-For the interview, a live demo is enough. [PRESENTATION.md](PRESENTATION.md) gives a 20-minute walkthrough outline and the questions to rehearse.

@@ -4,7 +4,7 @@
 
 The six businesses use the same page structure. Company names, colours, icons and app availability live in configuration, and CSS variables apply the selected theme. This keeps fixes consistent across the group and makes another subsidiary an extension of the configuration rather than another copy of the page.
 
-The trade-off is less freedom for each brand. The logo currently keeps the shared Finchglow name and plane mark, with company colours applied. Separate company logos or different navigation would need additional configuration. A separate page for every business would offer more freedom but create duplication for a small home-page prototype.
+The trade-off is less freedom for each brand. The logo keeps the shared Finchglow name while its mark, business label and colours follow the selected company configuration. The current marks are prototype icons; approved logo assets or different navigation could be added through configuration. A separate page for every business would offer more freedom but create duplication for a small home-page prototype.
 
 ## 2. Use the extra feature to show different staff needs
 

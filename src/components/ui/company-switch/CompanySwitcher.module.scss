@@ -40,8 +40,13 @@
   padding: 4px;
   border: 0;
   border-radius: var(--radius-sm);
-  background: var(--accent-soft);
-  color: var(--accent-dark);
+  background: transparent;
+  color: var(--text-muted);
+
+  &[data-state='open'] {
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+  }
 
   @include up(lg) {
     display: none;
@@ -55,7 +60,7 @@
 
 .content {
   @include menu-panel;
-  min-width: 300px;
+  min-width: min(300px, calc(100vw - 24px));
   max-height: min(70dvh, var(--radix-dropdown-menu-content-available-height));
   overflow-y: auto;
 }

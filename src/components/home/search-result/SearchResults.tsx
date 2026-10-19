@@ -62,7 +62,7 @@ export function SearchResults() {
   const total = apps.length + news.length + alerts.length;
 
   const status =
-    state.status === 'loading' ? 'Searching' : state.status === 'error' ? 'Search failed' : `${total} results`;
+    state.status === 'loading' ? 'Searching' : state.status === 'error' ? 'Search failed' : `${total} ${total === 1 ? 'result' : 'results'}`;
 
   return (
     <section className={styles.panel} aria-labelledby="search-heading">
@@ -121,7 +121,10 @@ export function SearchResults() {
           <SearchX aria-hidden="true" size={32} />
           <h2>No results found</h2>
           <p>Try a different keyword or check for typos.</p>
-          <button type="button" className={styles.action} onClick={() => setQuery('')}>
+          <button type="button" className={styles.action} onClick={() => {
+            setQuery('');
+            document.getElementById('portal-search')?.focus();
+          }}>
             Clear search
           </button>
         </div>

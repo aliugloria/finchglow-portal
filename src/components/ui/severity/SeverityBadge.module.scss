@@ -19,16 +19,6 @@
     background: var(--warning-bg);
     color: var(--warning-text);
 
-    /* Phones: hide visually, keep for screen readers */
-    @media (max-width: 767.98px) {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      margin: -1px;
-      padding: 0;
-      overflow: hidden;
-      clip-path: inset(50%);
-    }
   }
 
   &[data-severity="info"] {
