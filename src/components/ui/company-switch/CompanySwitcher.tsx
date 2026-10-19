@@ -5,20 +5,21 @@ import { Check, ChevronDown } from 'lucide-react';
 import { COMPANIES } from '@/config/companies';
 import { usePortal } from '@/providers/PortalProvider';
 import type { CompanyId } from '@/types';
-import { Icon } from './Icon';
+import { Icon } from '../Icon';
 import styles from './CompanySwitcher.module.scss';
 
-export function CompanySwitcher() {
+export function CompanySwitcher({ placement = 'header' }: { placement?: 'header' | 'bottom-nav' }) {
   const { company, setCompanyId } = usePortal();
+  const inBottomNav = placement === 'bottom-nav';
 
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger className={styles.trigger} aria-label={`Business: ${company.name}. Change business`}>
-        <Icon name={company.icon} size={18} />
-        <span className={styles.name}>{company.shortName}</span>
-        <ChevronDown aria-hidden="true" size={16} />
+      <DropdownMenu.Trigger className={inBottomNav ? styles.mobileTrigger : styles.trigger} aria-label={`Business: ${company.name}. Change business`}>
+        <Icon name={company.icon} size={inBottomNav ? 24 : 18} />
+        <span className={inBottomNav ? styles.mobileLabel : styles.name}>{inBottomNav ? 'Business' : company.shortName}</span>
+        {!inBottomNav && <ChevronDown aria-hidden="true" size={16} />}
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content className={styles.content} align="start" sideOffset={8}>
+      <DropdownMenu.Content className={styles.content} align={inBottomNav ? 'center' : 'start'} side={inBottomNav ? 'top' : 'bottom'} sideOffset={8} collisionPadding={12}>
         <DropdownMenu.Label className={styles.label}>Switch business</DropdownMenu.Label>
         <DropdownMenu.RadioGroup value={company.id} onValueChange={(id) => setCompanyId(id as CompanyId)}>
           {COMPANIES.map((c) => (

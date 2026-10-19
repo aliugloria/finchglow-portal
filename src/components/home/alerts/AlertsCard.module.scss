@@ -1,4 +1,4 @@
-@use 'mixins' as *;
+@use "mixins" as *;
 
 .card {
   @include card;
@@ -22,20 +22,47 @@
 }
 
 .item {
+  position: relative;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr auto;
+
   gap: var(--space-3);
   padding: var(--space-4) var(--space-3);
   border-top: 1px solid var(--border);
 
-  &[data-severity='critical'] {
+  &[data-severity="critical"] {
     border-left: 4px solid var(--critical);
     background: var(--critical-bg);
     border-radius: var(--radius-sm);
   }
 
-  @include up(md) {
-    grid-template-columns: auto 1fr auto;
+}
+
+.details {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font-weight: inherit;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-sm);
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    &::after {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
   }
 }
 
@@ -46,9 +73,18 @@
   height: 40px;
   border-radius: 50%;
 
-  [data-severity='critical'] > & { background: var(--critical); color: #fff; }
-  [data-severity='warning'] > & { background: var(--warning-bg); color: var(--warning-text); }
-  [data-severity='info'] > & { background: var(--info-bg); color: var(--info-text); }
+  [data-severity="critical"] > & {
+    background: var(--critical);
+    color: #fff;
+  }
+  [data-severity="warning"] > & {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+  }
+  [data-severity="info"] > & {
+    background: var(--info-bg);
+    color: var(--info-text);
+  }
 }
 
 .body {
@@ -74,19 +110,22 @@
 }
 
 .desc {
-  margin-top: var(--space-1);
-  font-size: 0.875rem;
-  color: var(--text-muted);
+  display: none;
+
+  @include up(lg) {
+    display: block;
+    margin-top: var(--space-1);
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
 }
 
 .time {
-  grid-column: 2;
+    grid-column: auto;
+
   font-size: 0.8125rem;
   color: var(--text-muted);
 
-  @include up(md) {
-    grid-column: auto;
-  }
 }
 
 .empty {

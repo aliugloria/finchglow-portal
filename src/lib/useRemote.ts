@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 
 export type Remote<T> = { status: 'loading' } | { status: 'error' } | { status: 'success'; data: T };
 
-/** Loads data, tracks loading and error, and reloads when `deps` change. */
 export function useRemote<T>(load: () => Promise<T>, deps: readonly unknown[]) {
   const [state, setState] = useState<Remote<T>>({ status: 'loading' });
   const [attempt, setAttempt] = useState(0);

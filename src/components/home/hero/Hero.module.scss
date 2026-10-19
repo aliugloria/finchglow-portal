@@ -8,7 +8,6 @@
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
   color: var(--on-accent);
 
-  /* One quiet decorative shape. */
   &::after {
     content: '';
     position: absolute;
@@ -66,4 +65,28 @@
   background: rgb(0 0 0 / 26%);
   font-size: 0.875rem;
   font-weight: 600;
+}
+
+.withImage {
+  background:
+    linear-gradient(
+      color-mix(in srgb, var(--accent-dark) 80%, transparent),
+      color-mix(in srgb, var(--accent-dark) 80%, transparent)
+    ),
+    var(--hero-image) right center / cover;
+
+  &::after {
+    display: none;
+  }
+
+  @include up(lg) {
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--accent-dark) 92%, transparent) 0%,
+        color-mix(in srgb, var(--accent-dark) 72%, transparent) 45%,
+        color-mix(in srgb, var(--accent-dark) 12%, transparent) 100%
+      ),
+      var(--hero-image) right center / cover;
+  }
 }

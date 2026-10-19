@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import { COMPANIES } from '@/config/companies';
+import { describe, expect, it } from "vitest";
+import { COMPANIES } from "@/config/companies";
 
 function luminance(hex: string): number {
   const [r, g, b] = [1, 3, 5]
@@ -15,22 +15,31 @@ export function contrast(a: string, b: string): number {
 
 const AA = 4.5;
 
-// A new subsidiary with a low-contrast colour fails here before it ships.
-describe.each(COMPANIES)('$name theme meets WCAG AA (4.5:1)', ({ theme }) => {
-  it('white text on the accent', () => expect(contrast(theme.onAccent, theme.accent)).toBeGreaterThanOrEqual(AA));
-  it('white text on the dark accent', () => expect(contrast(theme.onAccent, theme.accentDark)).toBeGreaterThanOrEqual(AA));
-  it('dark accent text on the soft tint', () => expect(contrast(theme.accentDark, theme.accentSoft)).toBeGreaterThanOrEqual(AA));
-  it('accent used as text on white', () => expect(contrast(theme.accent, '#FFFFFF')).toBeGreaterThanOrEqual(AA));
+describe.each(COMPANIES)("$name theme meets WCAG AA (4.5:1)", ({ theme }) => {
+  it("white text on the accent", () =>
+    expect(contrast(theme.onAccent, theme.accent)).toBeGreaterThanOrEqual(AA));
+  it("white text on the dark accent", () =>
+    expect(contrast(theme.onAccent, theme.accentDark)).toBeGreaterThanOrEqual(
+      AA,
+    ));
+  it("dark accent text on the soft tint", () =>
+    expect(contrast(theme.accentDark, theme.accentSoft)).toBeGreaterThanOrEqual(
+      AA,
+    ));
+  it("accent used as text on white", () =>
+    expect(contrast(theme.accent, "#FFFFFF")).toBeGreaterThanOrEqual(AA));
 });
 
-describe('fixed colours', () => {
+describe("fixed colours", () => {
   it.each([
-    ['white on critical red (banner)', '#FFFFFF', '#C8102E'],
-    ['critical text on its tint', '#A50D26', '#FDE8EC'],
-    ['warning text on its tint', '#7C3A06', '#FEF3C7'],
-    ['info text on its tint', '#075985', '#E0F2FE'],
-    ['muted text on white', '#475569', '#FFFFFF'],
-    ['muted text on page background', '#475569', '#F4F7FB'],
-    ['body text on white', '#0B2A45', '#FFFFFF'],
-  ])('%s', (_name, fg, bg) => expect(contrast(fg, bg)).toBeGreaterThanOrEqual(AA));
+    ["white on critical red (banner)", "#FFFFFF", "#C8102E"],
+    ["critical text on its tint", "#A50D26", "#FDE8EC"],
+    ["warning text on its tint", "#7C3A06", "#FEF3C7"],
+    ["info text on its tint", "#075985", "#E0F2FE"],
+    ["muted text on white", "#475569", "#FFFFFF"],
+    ["muted text on page background", "#475569", "#F4F7FB"],
+    ["body text on white", "#0B2A45", "#FFFFFF"],
+  ])("%s", (_name, fg, bg) =>
+    expect(contrast(fg, bg)).toBeGreaterThanOrEqual(AA),
+  );
 });

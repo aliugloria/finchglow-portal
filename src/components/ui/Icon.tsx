@@ -41,7 +41,6 @@ const ICONS: Record<IconKey, ComponentType<LucideProps>> = {
   wrench: Wrench,
 };
 
-/** One place that maps config icon keys to lucide icons. Decorative by default. */
 export function Icon({ name, ...props }: { name: IconKey } & LucideProps) {
   const Component = ICONS[name];
   return <Component aria-hidden="true" focusable="false" {...props} />;

@@ -51,6 +51,8 @@ export interface CompanyConfig {
   portalTitle: string;
   icon: IconKey;
   theme: CompanyTheme;
+  /** Optional hero photo in /public. Companies without one use the gradient. */
+  bannerImage?: string;
 }
 
 export interface RoleConfig {
@@ -100,3 +102,5 @@ export interface NewsItem {
   audience: 'internal' | 'external';
   publishedAt: string;
 }
+
+export type NewsFilter = 'all' | 'group' | 'internal' | 'external';

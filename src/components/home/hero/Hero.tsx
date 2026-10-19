@@ -1,24 +1,33 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { COMPANIES_BY_ID } from '@/config/companies';
-import { Icon } from '@/components/ui/Icon';
-import { getGreeting } from '@/lib/format';
-import { usePortal } from '@/providers/PortalProvider';
-import styles from './Hero.module.scss';
+import { CSSProperties, useEffect, useState } from "react";
+import { COMPANIES_BY_ID } from "@/config/companies";
+import { Icon } from "@/components/ui/Icon";
+import { getGreeting } from "@/lib/format";
+import { usePortal } from "@/providers/PortalProvider";
+import styles from "./Hero.module.scss";
+import { cx } from "@/lib/cx";
 
 export function Hero() {
   const { persona, role, company } = usePortal();
-  const [greeting, setGreeting] = useState('Hello');
+  const [greeting, setGreeting] = useState("Hello");
 
   // Read the clock after mount so server and client markup match.
   useEffect(() => setGreeting(getGreeting(new Date().getHours())), []);
 
   const employerName = COMPANIES_BY_ID[persona.companyId].name;
-  const firstName = persona.name.split(' ')[0];
+  const firstName = persona.name.split(" ")[0];
 
   return (
-    <section className={styles.hero} aria-labelledby="greeting">
+    <section
+      className={cx(styles.hero, company.bannerImage && styles.withImage)}
+      style={
+        {
+          "--hero-image": company.bannerImage && `url(${company.bannerImage})`,
+        } as CSSProperties
+      }
+      aria-labelledby="greeting"
+    >
       <h1 id="greeting" className={styles.title}>
         {greeting}, {firstName}
       </h1>

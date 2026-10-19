@@ -10,7 +10,9 @@ import { LauncherGrid } from './launcher/LauncherGrid';
 import { AlertsCard } from './alerts/AlertsCard';
 import { NewsCard } from './news/NewsCard';
 import { fetchAlerts, fetchNews } from '@/lib/api';
- 
+import HomePage from '@/app/page';
+import { SearchField } from '@/components/ui/search/SearchField';
+import { AlertDetailsModal } from '@/components/ui/alert-details/AlertDetailsModal';
 
 // Replace the slow, failure-prone mock API with instant answers.
 vi.mock('@/lib/api', () => ({ fetchAlerts: vi.fn(), fetchNews: vi.fn() }));
@@ -22,16 +24,49 @@ function renderPortal() {
       <LauncherGrid />
       <AlertsCard />
       <NewsCard />
+      <AlertDetailsModal />
     </PortalProvider>,
   );
 }
 
 beforeEach(() => {
+  HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', ''); };
+  HTMLDialogElement.prototype.close = function () { this.removeAttribute('open'); };
   vi.mocked(fetchAlerts).mockReset().mockResolvedValue(ALERTS);
   vi.mocked(fetchNews).mockReset().mockResolvedValue(NEWS);
 });
 
 describe('critical alert banner', () => {
+  it('opens critical details during search without clearing the query', async () => {
+    const user = userEvent.setup();
+    render(
+      <PortalProvider>
+        <CriticalBanner />
+        <SearchField />
+        <HomePage />
+        <AlertDetailsModal />
+      </PortalProvider>,
+    );
+    const banner = await screen.findByRole('alert');
+    const search = screen.getByRole('textbox', { name: 'Search apps, news and alerts' });
+    await user.type(search, 'crm');
+    expect(document.getElementById('alerts')).toBeNull();
+
+    const details = within(banner).getByRole('button', { name: 'View details' });
+    await user.click(details);
+
+    const dialog = screen.getByRole('dialog', { name: ALERTS[0].title });
+    expect(within(dialog).getByText(ALERTS[0].description)).toBeInTheDocument();
+    expect(search).toHaveValue('crm');
+    await user.click(within(dialog).getByRole('button', { name: 'Close' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    expect(screen.getByRole('heading', { name: /Results for/ })).toBeInTheDocument();
+    expect(banner).toBeInTheDocument();
+    await user.click(await screen.findByRole('button', { name: `View alert: ${ALERTS[2].title}` }));
+    expect(within(screen.getByRole('dialog')).getByText(ALERTS[2].description)).toBeInTheDocument();
+    expect(search).toHaveValue('crm');
+  });
+
   it('shows the critical alert and only goes away once acknowledged', async () => {
     const user = userEvent.setup();
     renderPortal();
@@ -43,6 +78,42 @@ describe('critical alert banner', () => {
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     // The alert stays in the feed, marked as acknowledged.
     expect(screen.getByText('Acknowledged')).toBeInTheDocument();
+  });
+});
+
+describe('shared alert details', () => {
+  it.each(['a1', 'a2', 'a3'])('opens the matching details for feed alert %s', async (id) => {
+    const user = userEvent.setup();
+    renderPortal();
+    const alert = ALERTS.find((item) => item.id === id)!;
+    const trigger = await screen.findByRole('button', { name: `View alert: ${alert.title}` });
+    trigger.focus();
+    await user.keyboard('{Enter}');
+
+    const dialog = screen.getByRole('dialog', { name: alert.title });
+    expect(within(dialog).getByText(alert.description)).toBeInTheDocument();
+    expect(within(dialog).getByText(id === 'a2' ? 'OTA' : 'Group-wide')).toBeInTheDocument();
+    expect(document.body.style.overflow).toBe('hidden');
+    await user.click(within(dialog).getByRole('button', { name: 'Close alert details' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    await waitFor(() => expect(document.body.style.overflow).not.toBe('hidden'));
+  });
+
+  it('keeps acknowledged alerts readable in the same dialog', async () => {
+    const user = userEvent.setup();
+    renderPortal();
+    const banner = await screen.findByRole('alert');
+    await user.click(within(banner).getByRole('button', { name: 'Acknowledge' }));
+    await user.click(screen.getByRole('button', { name: `View alert: ${ALERTS[0].title}` }));
+    expect(within(screen.getByRole('dialog')).getByText('You have acknowledged this alert.')).toBeInTheDocument();
+  });
+
+  it('has no detectable axe violations when the dialog is open', async () => {
+    const user = userEvent.setup();
+    const { container } = renderPortal();
+    await user.click(await screen.findByRole('button', { name: `View alert: ${ALERTS[0].title}` }));
+    const results = await axe(container, { rules: { region: { enabled: false } } });
+    expect(results.violations).toEqual([]);
   });
 });
 

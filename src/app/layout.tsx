@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import '@fontsource-variable/plus-jakarta-sans';
 import '@/styles/globals.scss';
-import { AppShell } from '@/components/layout/AppShell';
 import { PortalProvider } from '@/providers/PortalProvider';
+import { AppShell } from '@/components/layout/appshell/AppShell';
 
 export const metadata: Metadata = {
   title: 'Finchglow Group Staff Portal',

@@ -5,7 +5,6 @@ $breakpoints: (
   lg: 1024px,
 );
 
-/// Mobile-first: styles apply from this width up.
 @mixin up($name) {
   @media (min-width: map.get($breakpoints, $name)) {
     @content;
@@ -19,7 +18,6 @@ $breakpoints: (
   box-shadow: var(--shadow-sm);
 }
 
-/// Shared look for menu panels (company switcher, account menu).
 @mixin menu-panel {
   z-index: 60;
   min-width: 260px;

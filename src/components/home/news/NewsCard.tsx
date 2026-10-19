@@ -3,31 +3,26 @@
 import { useState } from 'react';
 import { COMPANIES_BY_ID } from '@/config/companies';
 import { Icon } from '@/components/ui/Icon';
-import { formatDate } from '@/lib/format';
 import { cx } from '@/lib/cx';
+import { formatDate } from '@/lib/format';
 import { usePortal } from '@/providers/PortalProvider';
-import type { NewsItem } from '@/types';
 import styles from './NewsCard.module.scss';
+import { NewsFilter } from '@/types';
+import { useRemote } from '@/lib/useRemote';
+import { fetchNews } from '@/lib/api';
+import { ErrorState, SkeletonRows } from '@/components/ui/FeedState';
 
-type Filter = 'all' | 'group' | 'internal' | 'external';
-
-const FILTERS: Array<{ id: Filter; label: string }> = [
+const FILTERS: Array<{ id: NewsFilter; label: string }> = [
   { id: 'all', label: 'All' },
   { id: 'group', label: 'Group-wide' },
   { id: 'internal', label: 'Internal' },
   { id: 'external', label: 'External' },
 ];
 
-function matches(item: NewsItem, filter: Filter): boolean {
-  if (filter === 'all') return true;
-  if (filter === 'group') return item.scope === 'group';
-  return item.audience === filter;
-}
-
 export function NewsCard() {
-  const { news } = usePortal();
-  const [filter, setFilter] = useState<Filter>('all');
-  const items = news.filter((item) => matches(item, filter));
+  const { company } = usePortal();
+  const [filter, setFilter] = useState<NewsFilter>('all');
+  const { state, retry } = useRemote(() => fetchNews(company.id, filter), [company.id, filter]);
 
   return (
     <section id="news" className={styles.card} aria-labelledby="news-heading">
@@ -47,11 +42,18 @@ export function NewsCard() {
           </button>
         ))}
       </div>
-      {items.length === 0 ? (
+
+      <p role="status" className="sr-only">
+        {state.status === 'loading' ? 'Loading news' : state.status === 'error' ? 'News failed to load' : ''}
+      </p>
+      {state.status === 'loading' && <SkeletonRows count={3} />}
+      {state.status === 'error' && <ErrorState title="News couldn’t load" onRetry={retry} />}
+      {state.status === 'success' && state.data.length === 0 && (
         <p className={styles.empty}>No news for this filter. Try another one.</p>
-      ) : (
+      )}
+      {state.status === 'success' && state.data.length > 0 && (
         <ul className={styles.list}>
-          {items.map((item) => (
+          {state.data.map((item) => (
             <li key={item.id} className={styles.item}>
               <span className={styles.thumb}>
                 <Icon name={item.icon} size={24} />
