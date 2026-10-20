@@ -36,7 +36,7 @@ export function AlertsCard() {
                       {alert.title}
                     </button>
                   </h3>
-                  <SeverityBadge severity={alert.severity} />
+                  {/* <SeverityBadge severity={alert.severity} /> */}
                   {acknowledged.has(alert.id) && <span className={styles.ack}>Acknowledged</span>}
                 </div>
                 <p className={styles.desc}>{alert.description}</p>
