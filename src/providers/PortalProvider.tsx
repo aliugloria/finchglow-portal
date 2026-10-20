@@ -22,6 +22,7 @@ import type {
 } from "@/types";
 import { useRemote } from "@/lib/useRemote";
 import { fetchAlerts } from "@/lib/api";
+import { useActivity } from "@/lib/useActivity";
 
 interface PortalState {
   company: CompanyConfig;
@@ -41,6 +42,10 @@ interface PortalState {
   selectedAlert: Alert | null;
   openAlert: (alert: Alert) => void;
   closeAlert: () => void;
+  readNews: string[];
+  recentApps: string[];
+  toggleNewsRead: (id: string) => void;
+  recordAppUse: (id: string) => void;
 }
 
 const PortalContext = createContext<PortalState | null>(null);
@@ -49,6 +54,7 @@ const NO_ALERTS: Alert[] = [];
 export function PortalProvider({ children }: { children: ReactNode }) {
   const [companyId, setCompanyId] = useState<CompanyId>("group");
   const [personaId, setPersonaId] = useState<string>(PERSONAS[0].id);
+  const { readNews, recentApps, toggleNewsRead, recordAppUse } = useActivity(personaId);
   const [query, setQuery] = useState("");
   const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
   const closeAlert = useCallback(() => setSelectedAlert(null), []);
@@ -73,7 +79,9 @@ export function PortalProvider({ children }: { children: ReactNode }) {
       persona,
       setPersonaId,
       role: ROLES_BY_ID[persona.roleId],
-      apps: getAppsFor(persona.roleId, companyId),
+      apps: getAppsFor(persona.roleId, companyId).sort((a, b) =>
+        Number(b.id === recentApps[0]) - Number(a.id === recentApps[0]),
+      ),
       alerts,
       alertsStatus: alertsState.status,
       retryAlerts,
@@ -82,6 +90,10 @@ export function PortalProvider({ children }: { children: ReactNode }) {
       selectedAlert,
       openAlert: setSelectedAlert,
       closeAlert,
+      readNews,
+      recentApps,
+      toggleNewsRead,
+      recordAppUse,
       acknowledged,
       acknowledge,
       pendingCritical: alerts.filter(
@@ -97,6 +109,10 @@ export function PortalProvider({ children }: { children: ReactNode }) {
     query,
     selectedAlert,
     closeAlert,
+    readNews,
+    recentApps,
+    toggleNewsRead,
+    recordAppUse,
     acknowledged,
     acknowledge,
   ]);

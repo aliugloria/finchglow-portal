@@ -1,21 +1,22 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { NEWS } from '@/data/news';
-import { NewsPhotoCredit, NewsThumbnail } from './NewsThumbnail';
+import { NewsThumbnail } from './NewsThumbnail';
 
 const external = NEWS.find((item) => item.id === 'n1')!;
 const internal = NEWS.find((item) => item.id === 'n2')!;
 
 describe('news photos', () => {
   it('shows an accessible, lazy-loaded external photo with photographer and source credits', () => {
-    render(<><NewsThumbnail item={external} /><NewsPhotoCredit item={external} /></>);
+    render(<NewsThumbnail item={external} />);
     expect(screen.getByRole('img', { name: external.image!.alt })).toHaveAttribute('loading', 'lazy');
-    expect(screen.getByRole('link', { name: external.image!.photographer })).toHaveAttribute('href', external.image!.photographerUrl);
-    expect(screen.getByRole('link', { name: 'Unsplash' })).toHaveAttribute('href', external.image!.sourceUrl);
+    const source = screen.getByRole('link', { name: `Photo by ${external.image!.photographer} on Unsplash (opens in a new tab)` });
+    expect(source).toHaveAttribute('href', external.image!.sourceUrl);
+    expect(source).toHaveAttribute('title', `Photo by ${external.image!.photographer} on Unsplash`);
   });
 
   it('keeps internal news as icons without photo credits', () => {
-    const { container } = render(<><NewsThumbnail item={internal} /><NewsPhotoCredit item={internal} /></>);
+    const { container } = render(<NewsThumbnail item={internal} />);
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
     expect(container.querySelector('svg')).toBeInTheDocument();

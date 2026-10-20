@@ -11,7 +11,7 @@ import { BottomNav } from '../mobile-nav/BottomNav';
 import { AlertDetailsModal } from '@/components/ui/alert-details/AlertDetailsModal';
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const { company, pendingCritical } = usePortal();
+  const { company, pendingCritical, query } = usePortal();
   const shellRef = useRef<HTMLDivElement>(null);
   const bannerRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +29,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [pendingCritical.length]);
 
   return (
-    <div ref={shellRef} className={styles.shell} style={themeStyle(company)} data-banner={pendingCritical.length > 0}>
+    <div ref={shellRef} className={styles.shell} style={themeStyle(company)} data-banner={pendingCritical.length > 0} data-search={Boolean(query.trim())}>
       <a href="#main" className="skip-link">
         Skip to main content
       </a>

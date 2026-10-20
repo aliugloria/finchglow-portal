@@ -4,9 +4,10 @@ import { ArrowRight } from 'lucide-react';
 import { Icon } from '@/components/ui/Icon';
 import { usePortal } from '@/providers/PortalProvider';
 import styles from './LauncherGrid.module.scss';
+import { RecentlyUsedBadge } from '@/components/ui/activity/ActivityIndicators';
 
 export function LauncherGrid() {
-  const { apps, company, role } = usePortal();
+  const { apps, company, role, recordAppUse, recentApps } = usePortal();
 
   return (
     <section id="apps" className={styles.section} aria-labelledby="apps-heading">
@@ -21,11 +22,17 @@ export function LauncherGrid() {
         <ul className={styles.grid}>
           {apps.map((app) => (
             <li key={app.id}>
-              <a href={app.href} className={styles.tile} data-tone={app.tone}>
+              <a href={app.href} className={styles.tile} data-tone={app.tone} data-recent={recentApps[0] === app.id} onClick={(event) => {
+                if (app.href === '#') event.preventDefault();
+                recordAppUse(app.id);
+              }}>
                 <span className={styles.icon}>
-                  <Icon name={app.icon} size={26} />
+                  <Icon name={app.icon} size={22} />
                 </span>
-                <span className={styles.name}>{app.name}</span>
+                <span className={styles.content}>
+                  <span className={styles.name}>{app.name}</span>
+                  <RecentlyUsedBadge appId={app.id} />
+                </span>
                 <ArrowRight aria-hidden="true" size={16} className={styles.arrow} />
               </a>
             </li>

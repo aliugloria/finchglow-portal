@@ -7,5 +7,6 @@
 
   @include up(lg) {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: stretch;
   }
 }

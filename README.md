@@ -34,6 +34,10 @@ npm run typecheck     # Check TypeScript
 - Search for `CRM`, `flight` or `wellbeing`. Search covers accessible apps, news and alerts. Try an unmatched word to see the empty state, and clear the field to return home.
 - Acknowledge the critical payment alert. Its banner disappears, but the alert stays in the feed marked as acknowledged. View details opens the full message in a modal. Clicking any alert in the feed or search opens the same modal. Closing it preserves your search and does not acknowledge the alert.
 - Use the news filters to see group-wide, internal and external content.
+- News starts as unread. Select its Unread badge to mark it read, or Read to mark it unread again. The same status appears in search.
+- Open an app tile to see its Recently used indicator. Only the last opened app has this badge and moves to the first position in the launcher and matching search results. The prototype shortcuts stay on the portal until real destination URLs are supplied.
+
+Read news and recent apps are saved in this browser for each demo persona. Switching business keeps that person's activity, while switching persona shows their own history. Clearing site data resets it. If browser storage is unavailable, the indicators still work for the current visit.
 
 External news uses selected Unsplash photos matched to each story: Dubai, a beach destination and a hotel lobby. Photos load lazily, include photographer credits and fall back to an icon if unavailable. Internal news keeps its icons. These are illustrative photos for mock stories; no Unsplash API key or live news service is needed.
 
@@ -67,7 +71,7 @@ From 1024 px, the desktop sidebar collapses to an icon rail and expands on hover
 
 Manual checks covered keyboard navigation, modal dismissal and focus return, responsive layouts and visible severity labels. The automated suite checks company colour contrast, severity labels, filtering, search, loading and retry behaviour, critical-alert acknowledgement and shared alert details from the banner, feed and search. Axe checks cover the complete loaded page in both navigation layouts, plus the open alert modal. These automated checks do not measure the whole browser experience or replace the manual checks.
 
-Validation on 20 October 2026: all 82 tests passed, TypeScript passed during the production build, and `npm run build -- --webpack` completed successfully. Desktop and mobile checks confirmed the external photos load without horizontal overflow; sidebar checks covered hover expansion, collapse and keyboard access.
+Validation on 20 October 2026: all 89 tests passed, TypeScript passed during the production build, and `npm run build -- --webpack` completed successfully. Desktop and mobile checks confirmed the external photos load without horizontal overflow; sidebar checks covered hover expansion, collapse and keyboard access.
 
 ## Performance
 
@@ -75,8 +79,8 @@ Measured on 20 October 2026 from the completed Webpack production build with `NE
 
 | Home-page asset | Minified / uncompressed | Gzip estimate |
 | --- | --- | --- |
-| Initial JavaScript (9 script files) | 747.8 KiB | 234.5 KiB |
-| Stylesheets (3 files) | 30.1 KiB | 7.2 KiB |
+| Initial JavaScript (10 script files) | 739.4 KiB | 231.9 KiB |
+| Stylesheets (3 files) | 31.1 KiB | 7.5 KiB |
 | Default hero WebP | 67.1 KiB | Already image-compressed |
 
 The JavaScript total includes the framework/runtime and the script files referenced by the generated home-page HTML. The legacy-browser `nomodule` polyfill is excluded. Gzip totals are the sum of each file compressed separately; actual transfer depends on the server's compression. These figures exclude HTML, inline page data, fonts and images, so they are not the total page download or a measured loading time.

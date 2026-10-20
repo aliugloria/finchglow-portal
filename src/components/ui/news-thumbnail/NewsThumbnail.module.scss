@@ -30,17 +30,22 @@
 
 .image {
   object-fit: cover;
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+
+    [data-news-item]:hover & {
+      transform: scale(1.08);
+    }
+  }
 }
 
-.credit {
-  display: block;
-  margin-top: var(--space-2);
-  font-size: 0.6875rem;
-  line-height: 1.5;
-  color: var(--text-muted);
+.photoLink {
+  position: absolute;
+  inset: 0;
+}
 
-  a {
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
+.thumb:focus-within {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }

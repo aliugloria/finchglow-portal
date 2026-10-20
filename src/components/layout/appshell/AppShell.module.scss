@@ -7,6 +7,30 @@
   &[data-banner="true"] {
     --banner-offset: var(--banner-h);
   }
+
+  &[data-search="true"] {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+
+    > * { flex-shrink: 0; }
+
+    .body {
+      flex: 1;
+      min-height: 0;
+    }
+
+    .column { min-height: 0; }
+
+    .column > header { flex-shrink: 0; }
+
+    .main {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+  }
 }
 
 .body {
