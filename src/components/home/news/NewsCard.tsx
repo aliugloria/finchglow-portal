@@ -75,20 +75,15 @@ export function NewsCard() {
               <li key={item.id} className={styles.item} data-news-item>
                 <NewsThumbnail item={item} />
                 <div className={styles.body}>
-
-
                   <div className={styles.tags}>
                     <span className={styles.tag}>
                       {item.scope === "group"
                         ? "Group-wide"
                         : COMPANIES_BY_ID[item.companyId ?? "group"].shortName}
-                      
                     </span>
                     <span>•</span>
                     <span className={styles.category}>{item.category}</span>
-
                   </div>
-
 
                   <h3 className={styles.title}>{item.title}</h3>
                   <p className={styles.summary}>{item.summary}</p>

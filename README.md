@@ -32,6 +32,7 @@ npm run typecheck     # Check TypeScript
 - Change business in the desktop header or the Business control in the phone/tablet bottom navigation. Colours, the portal title, apps and company content change. Group-wide alerts remain visible.
 - Open the account menu to switch between a contact-centre agent, travel consultant, facilities technician and Academy trainer. Their launcher shortcuts differ.
 - Search for `CRM`, `flight` or `wellbeing`. Search covers accessible apps, news and alerts. Try an unmatched word to see the empty state, and clear the field to return home.
+- Search for `a` to see a longer results list. Results scroll inside the panel while the search field, heading and filters stay visible. Changing the query, filter, business or persona returns the list to the top. Keyboard users can Tab into the results region and scroll it with the arrow keys, Page Up/Down or Home/End.
 - Acknowledge the critical payment alert. Its banner disappears, but the alert stays in the feed marked as acknowledged. View details opens the full message in a modal. Clicking any alert in the feed or search opens the same modal. Closing it preserves your search and does not acknowledge the alert.
 - Use the news filters to see group-wide, internal and external content.
 - News starts as unread. Select its Unread badge to mark it read, or Read to mark it unread again. The same status appears in search.
@@ -39,7 +40,9 @@ npm run typecheck     # Check TypeScript
 
 Read news and recent apps are saved in this browser for each demo persona. Switching business keeps that person's activity, while switching persona shows their own history. Clearing site data resets it. If browser storage is unavailable, the indicators still work for the current visit.
 
-External news uses selected Unsplash photos matched to each story: Dubai, a beach destination and a hotel lobby. Photos load lazily, include photographer credits and fall back to an icon if unavailable. Internal news keeps its icons. These are illustrative photos for mock stories; no Unsplash API key or live news service is needed.
+External news uses selected Unsplash photos matched to each story: Dubai, a beach destination and a hotel lobby. Photos load lazily and fall back to an icon if unavailable. Each photo links to its source, with the photographer credit available on hover and to screen readers. Hovering a story gently zooms its photo unless reduced motion is preferred. Internal news keeps its icons. These are illustrative photos for mock stories; no Unsplash API key or live news service is needed.
+
+Dates appear beneath the story summaries, with Read/Unread on the right on wider screens. Desktop news matches the Alerts panel's height and scrolls beneath its heading and filters. On mobile, news stays in the normal page flow.
 
 To demonstrate failures, set `NEXT_PUBLIC_MOCK_FAIL_RATE=0.3` in `.env.local` and restart the dev server. Requests take about 500 ms and have a 30% chance of failing. Use `1` to force failure or `0` for a predictable walkthrough. Search also has a 250 ms typing debounce. This setting is public demo configuration, not a secret.
 
@@ -55,21 +58,21 @@ Next.js App Router and TypeScript provide the page and shared types. SCSS Module
 | `src/components/ui` | Shared controls, severity labels and loading/error displays |
 | `src/config` | Companies, roles, apps and navigation |
 | `src/data` | Mock staff, alerts and news |
-| `src/lib` | Filtering, mock requests, search, formatting and theme helpers |
-| `src/providers` | Selected company, demo user, search and alert acknowledgements |
+| `src/lib` | Filtering, mock requests, search, local activity storage, formatting and theme helpers |
+| `src/providers` | Selected company, demo user, search, activity and alert acknowledgements |
 | `src/styles` | Shared tokens, reset and breakpoint mixins |
 
 The provider holds the small amount of state shared across the page. Feed requests use a small loading hook that ignores stale responses and offers retry. Visibility rules live in plain functions so they can be tested without rendering the interface.
 
 To add a seventh subsidiary, add its company configuration and extend `CompanyId`, then assign its apps and mock content. No duplicated page or component is needed. The logo keeps the Finchglow name and changes its mark, business label and colours from the selected company configuration. The marks are prototype icons, rather than official subsidiary logo assets.
 
-The three main trade-offs are in [DECISIONS.md](DECISIONS.md).
+The main trade-offs are in [DECISIONS.md](DECISIONS.md).
 
 ## Accessibility and checks
 
 From 1024 px, the desktop sidebar collapses to an icon rail and expands on hover or keyboard focus. Below that, the portal uses bottom navigation. It includes a skip link, labelled controls, visible focus styles, text labels for severity, live status messages and reduced-motion support. Critical alerts use a sticky banner and `role="alert"`; they remain visible until acknowledged.
 
-Manual checks covered keyboard navigation, modal dismissal and focus return, responsive layouts and visible severity labels. The automated suite checks company colour contrast, severity labels, filtering, search, loading and retry behaviour, critical-alert acknowledgement and shared alert details from the banner, feed and search. Axe checks cover the complete loaded page in both navigation layouts, plus the open alert modal. These automated checks do not measure the whole browser experience or replace the manual checks.
+Manual checks covered keyboard navigation, modal dismissal and focus return, responsive layouts, visible severity labels, activity after refresh and internal search scrolling on desktop and mobile. The automated suite checks company colour contrast, severity labels, filtering, search, loading and retry behaviour, critical-alert acknowledgement and shared alert details from the banner, feed and search. It also checks recent-app priority, read-status persistence, separate persona histories, migration from the earlier three-app history and blocked browser storage. Axe checks cover the complete loaded page in both navigation layouts, plus the open alert modal. These automated checks do not measure the whole browser experience or replace the manual checks.
 
 Validation on 20 October 2026: all 89 tests passed, TypeScript passed during the production build, and `npm run build -- --webpack` completed successfully. Desktop and mobile checks confirmed the external photos load without horizontal overflow; sidebar checks covered hover expansion, collapse and keyboard access.
 
