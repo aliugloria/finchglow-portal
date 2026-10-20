@@ -35,6 +35,8 @@ npm run typecheck     # Check TypeScript
 - Acknowledge the critical payment alert. Its banner disappears, but the alert stays in the feed marked as acknowledged. View details opens the full message in a modal. Clicking any alert in the feed or search opens the same modal. Closing it preserves your search and does not acknowledge the alert.
 - Use the news filters to see group-wide, internal and external content.
 
+External news uses selected Unsplash photos matched to each story: Dubai, a beach destination and a hotel lobby. Photos load lazily, include photographer credits and fall back to an icon if unavailable. Internal news keeps its icons. These are illustrative photos for mock stories; no Unsplash API key or live news service is needed.
+
 To demonstrate failures, set `NEXT_PUBLIC_MOCK_FAIL_RATE=0.3` in `.env.local` and restart the dev server. Requests take about 500 ms and have a 30% chance of failing. Use `1` to force failure or `0` for a predictable walkthrough. Search also has a 250 ms typing debounce. This setting is public demo configuration, not a secret.
 
 ## How the app is organised
@@ -61,20 +63,20 @@ The three main trade-offs are in [DECISIONS.md](DECISIONS.md).
 
 ## Accessibility and checks
 
-The layout uses a desktop sidebar from 1024 px and bottom navigation below that. It includes a skip link, labelled controls, visible focus styles, text labels for severity, live status messages and reduced-motion support. Critical alerts use a sticky banner and `role="alert"`; they remain visible until acknowledged.
+From 1024 px, the desktop sidebar collapses to an icon rail and expands on hover or keyboard focus. Below that, the portal uses bottom navigation. It includes a skip link, labelled controls, visible focus styles, text labels for severity, live status messages and reduced-motion support. Critical alerts use a sticky banner and `role="alert"`; they remain visible until acknowledged.
 
 Manual checks covered keyboard navigation, modal dismissal and focus return, responsive layouts and visible severity labels. The automated suite checks company colour contrast, severity labels, filtering, search, loading and retry behaviour, critical-alert acknowledgement and shared alert details from the banner, feed and search. Axe checks cover the complete loaded page in both navigation layouts, plus the open alert modal. These automated checks do not measure the whole browser experience or replace the manual checks.
 
-Validation on 19 October 2026: all 76 tests passed, TypeScript passed during the production build, and `npm run build -- --webpack` completed successfully.
+Validation on 20 October 2026: all 82 tests passed, TypeScript passed during the production build, and `npm run build -- --webpack` completed successfully. Desktop and mobile checks confirmed the external photos load without horizontal overflow; sidebar checks covered hover expansion, collapse and keyboard access.
 
 ## Performance
 
-Measured on 19 October 2026 from the completed Webpack production build with `NEXT_PUBLIC_MOCK_FAIL_RATE=0`:
+Measured on 20 October 2026 from the completed Webpack production build with `NEXT_PUBLIC_MOCK_FAIL_RATE=0`:
 
 | Home-page asset | Minified / uncompressed | Gzip estimate |
 | --- | --- | --- |
-| Initial JavaScript (8 script files) | 640.1 KiB | 198.7 KiB |
-| Stylesheets (3 files) | 29.2 KiB | 7.0 KiB |
+| Initial JavaScript (9 script files) | 747.8 KiB | 234.5 KiB |
+| Stylesheets (3 files) | 30.1 KiB | 7.2 KiB |
 | Default hero WebP | 67.1 KiB | Already image-compressed |
 
 The JavaScript total includes the framework/runtime and the script files referenced by the generated home-page HTML. The legacy-browser `nomodule` polyfill is excluded. Gzip totals are the sum of each file compressed separately; actual transfer depends on the server's compression. These figures exclude HTML, inline page data, fonts and images, so they are not the total page download or a measured loading time.

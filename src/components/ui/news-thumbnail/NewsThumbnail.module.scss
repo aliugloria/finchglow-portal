@@ -1,0 +1,46 @@
+@use 'mixins' as *;
+
+.thumb {
+  position: relative;
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+}
+
+.photo {
+  width: 64px;
+  height: 64px;
+
+  @include up(md) {
+    width: 88px;
+    height: 72px;
+  }
+}
+
+.compact {
+  width: 44px;
+  height: 44px;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.credit {
+  display: block;
+  margin-top: var(--space-2);
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+
+  a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}

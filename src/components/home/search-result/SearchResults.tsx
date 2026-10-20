@@ -4,6 +4,7 @@ import { ArrowRight, LoaderCircle, SearchX, WifiOff } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { COMPANIES_BY_ID } from '@/config/companies';
 import { Icon } from '@/components/ui/Icon';
+import { NewsPhotoCredit, NewsThumbnail } from '@/components/ui/news-thumbnail/NewsThumbnail';
 import { SeverityBadge, SeverityIcon } from '@/components/ui/severity/SeverityBadge';
 import { cx } from '@/lib/cx';
 import { formatAgo, formatDate } from '@/lib/format';
@@ -157,14 +158,13 @@ export function SearchResults() {
           <ul>
             {news.map((item) => (
               <li key={item.id} className={styles.row}>
-                <span className={styles.icon}>
-                  <Icon name={item.icon} size={22} />
-                </span>
+                <NewsThumbnail item={item} compact />
                 <span className={styles.text}>
                   <span className={styles.title}>{item.title}</span>
                   <span className={styles.meta}>
                     {scopeLabel(item.scope, item.companyId)} · {item.category}
                   </span>
+                  <NewsPhotoCredit item={item} />
                 </span>
                 <time className={styles.when} dateTime={item.publishedAt}>
                   {formatDate(item.publishedAt)}

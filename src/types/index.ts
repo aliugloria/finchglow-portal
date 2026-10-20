@@ -101,6 +101,13 @@ export interface NewsItem {
   icon: IconKey;
   audience: 'internal' | 'external';
   publishedAt: string;
+  image?: {
+    src: string;
+    alt: string;
+    photographer: string;
+    photographerUrl: string;
+    sourceUrl: string;
+  };
 }
 
 export type NewsFilter = 'all' | 'group' | 'internal' | 'external';

@@ -11,6 +11,13 @@ export const NEWS: NewsItem[] = [
     icon: 'plane',
     audience: 'external',
     publishedAt: '2026-10-15',
+    image: {
+      src: 'https://images.unsplash.com/photo-1620325989144-aa3936f46160?auto=format&fit=crop&w=480&h=360&q=80',
+      alt: 'Dubai waterfront skyline at dusk',
+      photographer: 'Jithuz Devan',
+      photographerUrl: 'https://unsplash.com/@jithuz_devan?utm_source=finchglow_portal&utm_medium=referral',
+      sourceUrl: 'https://unsplash.com/photos/D4g_2rieZBo?utm_source=finchglow_portal&utm_medium=referral',
+    },
   },
   {
     id: 'n2',
@@ -42,6 +49,13 @@ export const NEWS: NewsItem[] = [
     icon: 'sun',
     audience: 'external',
     publishedAt: '2026-10-13',
+    image: {
+      src: 'https://images.unsplash.com/photo-1641637624325-257d9e4a682d?auto=format&fit=crop&w=480&h=360&q=80',
+      alt: 'Palm trees and turquoise water on a Maldives beach',
+      photographer: 'Naic Hassan',
+      photographerUrl: 'https://unsplash.com/@naichassan?utm_source=finchglow_portal&utm_medium=referral',
+      sourceUrl: 'https://unsplash.com/photos/6LnGrk1XWJY?utm_source=finchglow_portal&utm_medium=referral',
+    },
   },
   {
     id: 'n5',
@@ -53,6 +67,13 @@ export const NEWS: NewsItem[] = [
     icon: 'briefcase',
     audience: 'external',
     publishedAt: '2026-10-11',
+    image: {
+      src: 'https://images.unsplash.com/photo-1621293954908-907159247fc8?auto=format&fit=crop&w=480&h=360&q=80',
+      alt: 'Modern hotel lobby with seating and wood-panelled walls',
+      photographer: 'Frames For Your Heart',
+      photographerUrl: 'https://unsplash.com/@framesforyourheart?utm_source=finchglow_portal&utm_medium=referral',
+      sourceUrl: 'https://unsplash.com/photos/zSG-kd-L6vw?utm_source=finchglow_portal&utm_medium=referral',
+    },
   },
   {
     id: 'n6',

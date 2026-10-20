@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { COMPANIES_BY_ID } from '@/config/companies';
-import { Icon } from '@/components/ui/Icon';
+import { NewsPhotoCredit, NewsThumbnail } from '@/components/ui/news-thumbnail/NewsThumbnail';
 import { cx } from '@/lib/cx';
 import { formatDate } from '@/lib/format';
 import { usePortal } from '@/providers/PortalProvider';
@@ -55,9 +55,7 @@ export function NewsCard() {
         <ul className={styles.list}>
           {state.data.map((item) => (
             <li key={item.id} className={styles.item}>
-              <span className={styles.thumb}>
-                <Icon name={item.icon} size={24} />
-              </span>
+              <NewsThumbnail item={item} />
               <div className={styles.body}>
                 <div className={styles.tags}>
                   <span className={styles.tag}>
@@ -67,6 +65,7 @@ export function NewsCard() {
                 </div>
                 <h3 className={styles.title}>{item.title}</h3>
                 <p className={styles.summary}>{item.summary}</p>
+                <NewsPhotoCredit item={item} />
               </div>
               <time className={styles.date} dateTime={item.publishedAt}>
                 {formatDate(item.publishedAt)}
